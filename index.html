@@ -1,0 +1,417 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>FJ Guinchos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* RESET E BASE MOBILE-FIRST */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,215,0,0.08), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255,215,0,0.05), transparent 40%),
+    linear-gradient(135deg, #050c1a, #0b142b, #000000);
+  color: #ffffff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* LUZ DOURADA FUNDO */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,215,0,0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,0,0.12), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255,215,0,0.08), transparent 60%);
+  animation: goldGlow 8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: -1;
+  will-change: opacity, transform;
+}
+@keyframes goldGlow {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.9; transform: scale(1.1); }
+}
+
+/* CARROS SUBINDO */
+.car {
+  position: fixed;
+  bottom: -80px;
+  font-size: clamp(20px, 4vw, 26px);
+  opacity: 0.18;
+  pointer-events: none;
+  filter: sepia(1) saturate(5) hue-rotate(20deg) brightness(1.3);
+  animation: carUp linear infinite;
+  will-change: transform;
+}
+.car.c1 { left: 10%; animation-duration: 12s; }
+.car.c2 { left: 25%; animation-duration: 16s; }
+.car.c3 { left: 40%; animation-duration: 14s; }
+.car.c4 { left: 55%; animation-duration: 18s; }
+.car.c5 { left: 70%; animation-duration: 20s; }
+.car.c6 { left: 85%; animation-duration: 15s; }
+
+@keyframes carUp {
+  from { transform: translateY(0); opacity: 0; }
+  10% { opacity: 0.2; }
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,215,0,0.15);
+}
+.logo { display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform .3s ease; }
+.logo:hover { transform: scale(1.05); }
+.logo img { height: clamp(50px, 8vw, 65px); filter: sepia(1) hue-rotate(10deg) saturate(4) brightness(1.2); }
+.logo span { font-family: 'Orbitron', sans-serif; font-size: clamp(18px, 4vw, 22px); font-weight: 700; color: #ffd700; letter-spacing: 1px; }
+
+/* HERO SECTION */
+.hero { text-align: center; padding: clamp(60px, 15vw, 120px) 20px clamp(40px, 10vw, 60px); }
+.hero h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 8vw, 48px);
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+.hero p { font-size: clamp(14px, 4vw, 18px); color: #e0e0e0; max-width: 600px; margin: 0 auto; }
+
+.urgente {
+  margin-top: 20px;
+  font-size: clamp(16px, 5vw, 22px);
+  color: #ff4d4d;
+  font-weight: 600;
+  animation: pulseText 1.5s infinite;
+}
+@keyframes pulseText { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 35px auto 0;
+  padding: 16px 30px;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: clamp(15px, 4vw, 18px);
+  background: linear-gradient(45deg, #d4af37, #ffd700);
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  animation: pulseBtn 2s infinite;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.2s;
+}
+.btn:active { transform: scale(0.95); }
+
+@keyframes pulseBtn {
+  0% { box-shadow: 0 0 15px rgba(255,215,0,0.4); transform: scale(1); }
+  50% { box-shadow: 0 0 25px rgba(255,215,0,0.8); transform: scale(1.03); }
+  100% { box-shadow: 0 0 15px rgba(255,215,0,0.4); transform: scale(1); }
+}
+
+/* BADGES (VANTAGENS) */
+.badges {
+  margin-top: clamp(40px, 8vw, 50px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+  max-width: 1000px;
+  margin-left: auto; margin-right: auto;
+}
+.badge {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.badge:hover { transform: translateY(-4px); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+.badge h3 { color: #ffd700; font-size: 17px; margin-bottom: 8px; }
+.badge p { font-size: 14px; color: #ccc; line-height: 1.4; }
+
+/* CARROSSEL DE SERVIÇOS */
+.servicos { padding: clamp(50px, 10vw, 80px) 0; text-align: center; overflow: hidden; }
+.servicos h2 { font-family: 'Orbitron', sans-serif; font-size: clamp(26px, 7vw, 34px); color: #ffd700; margin-bottom: 40px; padding: 0 20px; }
+
+.carousel-cards {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.cards-wrapper {
+  display: flex;
+  gap: clamp(15px, 4vw, 30px); /* Ajusta a distância dos cards sozinho */
+  align-items: center;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+  cursor: grab;
+}
+.cards-wrapper:active { cursor: grabbing; }
+
+.card.slide {
+  width: clamp(250px, 70vw, 320px); /* Garante proporção boa no mobile e cresce no PC */
+  flex-shrink: 0;
+  opacity: 0.5;
+  transform: scale(0.85);
+  transition: all 0.5s ease;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+.card.slide.active {
+  opacity: 1;
+  transform: scale(1.05);
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 50px rgba(255, 215, 0, 0.2);
+  z-index: 2;
+}
+
+.card img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid rgba(255,215,0,0.2); pointer-events: none; }
+.card h3 { color: #ffd700; font-size: 20px; margin: 15px 15px 10px; }
+.card p { color: #ccc; font-size: 14px; margin: 0 15px 20px; line-height: 1.4; }
+
+/* BOTÕES DO CARROSSEL */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-size: 20px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+  transition: 0.3s;
+}
+.arrow:hover { background: rgba(255, 215, 0, 0.2); border-color: #ffd700; }
+.arrow:active { transform: translateY(-50%) scale(0.9); }
+/* Mantém as setas coladas nos cantos no celular */
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+/* Afasta as setas em telas maiores */
+@media (min-width: 768px) {
+  .arrow.left { left: 20px; }
+  .arrow.right { right: 20px; }
+  .arrow { width: 50px; height: 50px; font-size: 24px; }
+}
+
+/* WHATSAPP FLUTUANTE */
+.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: clamp(55px, 12vw, 70px);
+  width: clamp(55px, 12vw, 70px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: pulseWpp 1.5s infinite;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+.whatsapp:active { transform: scale(0.9); }
+.whatsapp img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+
+@keyframes pulseWpp {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+  50% { transform: scale(1.08); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+footer { text-align: center; padding: 30px 20px; margin-top: 20px; background: rgba(0,0,0,0.6); font-size: clamp(12px, 3vw, 14px); opacity: 0.8; color: #bbb; border-top: 1px solid rgba(255,215,0,0.1); }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo" onclick="chamarZap()">
+    <img src="logo.webp" alt="Logo">
+    <span>GUINCHOS</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Quebrou? Bateu?<br>Carro não liga?</h1>
+    <p>Chegamos rápido e transportamos seu veículo com total segurança.</p>
+
+    <div class="urgente">⚠️ Atendimento imediato • Online agora</div>
+    <a class="btn" onclick="chamarZap()">Preciso de Guincho Agora</a>
+
+    <div class="badges">
+      <div class="badge">
+        <h3>⭐ 4.8 de 5 estrelas</h3>
+        <p>Mais de 5.000 atendimentos com clientes satisfeitos.</p>
+      </div>
+      <div class="badge">
+        <h3>🚚 Tempo médio rápido</h3>
+        <p>Chegada ágil conforme localização e trânsito. Em torno de 25 a 45 minutos</p>
+      </div>
+      <div class="badge">
+        <h3>📍 Cobertura</h3>
+        <p>Todo o estado de São Paulo: Capital, Osasco, Campinas, Sorocaba, Santos e região.</p>
+      </div>
+      <div class="badge">
+        <h3>🚗 Veículos atendidos</h3>
+        <p>Carros de passeio, utilitários, SUVs, Elétricos e mini vans.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="servicos">
+    <h2>Nossos Serviços</h2>
+
+    <div class="carousel-cards">
+      <button class="arrow left" aria-label="Anterior" onclick="mover(-1)">&#10094;</button>
+
+      <div class="cards-wrapper" id="slider">
+        <div class="card slide">
+          <img src="guincho1.webp" alt="Guincho Leve" loading="lazy">
+          <h3>Guincho Leve</h3>
+          <p>Resgate rápido para carros de passeio.</p>
+        </div>
+
+        <div class="card slide active">
+          <img src="guincho1.webp" alt="Guincho Moderno" loading="lazy">
+          <h3>Guincho Moderno</h3>
+          <p>Atendimento para veículos populares, utilitários e mini vans.</p>
+        </div>
+
+        <div class="card slide">
+          <img src="guincho1.webp" alt="Socorro Emergencial" loading="lazy">
+          <h3>Socorro Emergencial</h3>
+          <p>Pane elétrica, mecânica ou acidente? Estamos prontos.</p>
+        </div>
+      </div>
+
+      <button class="arrow right" aria-label="Próximo" onclick="mover(1)">&#10095;</button>
+    </div>
+  </section>
+</main>
+
+<a class="whatsapp" aria-label="Chamar no WhatsApp" onclick="chamarZap()">
+  <img src="whatsapp.webp" alt="WhatsApp">
+</a>
+
+<footer>
+  © 2026 FJ Guinchos • Atendimento rápido • Preço acessível • Confiança total
+</footer>
+
+<div class="car c1">🚗</div>
+<div class="car c2">🚗</div>
+<div class="car c3">🚗</div>
+<div class="car c4">🚗</div>
+<div class="car c5">🚗</div>
+<div class="car c6">🚗</div>
+
+<script>
+function chamarZap() {
+  window.open("https://wa.me/5511979957192?text=Preciso%20de%20guincho%20urgente", "_blank", "noopener,noreferrer");
+}
+
+/* LÓGICA DO CARROSSEL */
+const wrapper = document.getElementById('slider');
+let isAnimating = false;
+
+function atualizarCentro() {
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach(s => s.classList.remove('active'));
+  // O elemento de índice 1 sempre será o do centro após a reordenação no DOM
+  wrapper.children[1].classList.add('active');
+}
+
+function mover(dir) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  // Calcula a distância exata em pixels que o card precisa se mover 
+  // (largura do card + gap calculado pelo CSS)
+  const rect0 = wrapper.children[0].getBoundingClientRect();
+  const rect1 = wrapper.children[1].getBoundingClientRect();
+  const cardWidth = rect1.left - rect0.left; 
+
+  if (dir === 1) { // Mover para Direita
+    wrapper.style.transform = `translateX(-${cardWidth}px)`;
+    
+    setTimeout(() => {
+      wrapper.style.transition = "none";
+      wrapper.appendChild(wrapper.firstElementChild);
+      wrapper.style.transform = "translateX(0)";
+      atualizarCentro();
+      
+      void wrapper.offsetWidth; // Força reflow
+      wrapper.style.transition = "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+      isAnimating = false;
+    }, 600);
+    
+  } else { // Mover para Esquerda
+    wrapper.style.transition = "none";
+    wrapper.insertBefore(wrapper.lastElementChild, wrapper.firstElementChild);
+    wrapper.style.transform = `translateX(-${cardWidth}px)`;
+    atualizarCentro();
+    
+    void wrapper.offsetWidth; // Força reflow
+    
+    wrapper.style.transition = "transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)";
+    wrapper.style.transform = "translateX(0)";
+    
+    setTimeout(() => { isAnimating = false; }, 600);
+  }
+}
+
+// Auto-play seguro (pausa se o usuário colocar o dedo ou mouse em cima)
+let autoPlay = setInterval(() => mover(1), 6000);
+wrapper.addEventListener('mouseenter', () => clearInterval(autoPlay));
+wrapper.addEventListener('mouseleave', () => autoPlay = setInterval(() => mover(1), 6000));
+wrapper.addEventListener('touchstart', () => clearInterval(autoPlay), {passive: true});
+wrapper.addEventListener('touchend', () => autoPlay = setInterval(() => mover(1), 6000), {passive: true});
+</script>
+
+</body>
+</html>
