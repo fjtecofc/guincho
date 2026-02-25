@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>FJ Guinchos</title>
+<title>Guincho 24h em São Paulo | Atendimento Rápido 25-45min | FJ Guinchos</title>
+<meta name="description" content="Precisa de guincho urgente em São Paulo? 🚚 Atendimento imediato 24h com chegada média de 25 a 45 minutos. Mais de 5.000 clientes atendidos e 4.8⭐ de avaliação. Fale agora no WhatsApp e resolva seu problema rápido!">
+<meta name="robots" content="index, follow">
+<meta name="author" content="FJ Guinchos">
+<meta name="keywords" content="guincho 24h, guincho em são paulo, guincho urgente, socorro 24 horas, guincho osasco, guincho campinas, guincho praia">
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -318,13 +322,13 @@ footer { text-align: center; padding: 30px 20px; margin-top: 20px; background: r
         </div>
 
         <div class="card slide active">
-          <img src="guincho1.webp" alt="Guincho Moderno" loading="lazy">
+          <img src="guincho3.webp" alt="Guincho Moderno" loading="lazy">
           <h3>Guincho Moderno</h3>
           <p>Atendimento para veículos populares, utilitários e mini vans.</p>
         </div>
 
         <div class="card slide">
-          <img src="guincho1.webp" alt="Socorro Emergencial" loading="lazy">
+          <img src="guincho2.webp" alt="Socorro Emergencial" loading="lazy">
           <h3>Socorro Emergencial</h3>
           <p>Pane elétrica, mecânica ou acidente? Estamos prontos.</p>
         </div>
@@ -352,7 +356,7 @@ footer { text-align: center; padding: 30px 20px; margin-top: 20px; background: r
 
 <script>
 function chamarZap() {
-  window.location.href = "tel:+5511933648273";
+  window.open("https://wa.me/5511979957192?text=Preciso%20de%20guincho%20urgente", "_blank", "noopener,noreferrer");
 }
 
 /* LÓGICA DO CARROSSEL */
@@ -409,8 +413,52 @@ function mover(dir) {
 let autoPlay = setInterval(() => mover(1), 6000);
 wrapper.addEventListener('mouseenter', () => clearInterval(autoPlay));
 wrapper.addEventListener('mouseleave', () => autoPlay = setInterval(() => mover(1), 6000));
-wrapper.addEventListener('touchstart', () => clearInterval(autoPlay), {passive: true});
-wrapper.addEventListener('touchend', () => autoPlay = setInterval(() => mover(1), 6000), {passive: true});
+let startX = 0;
+let startY = 0;
+let dragging = false;
+const SWIPE_MIN = 40;      // distância mínima pro swipe (px)
+const VERTICAL_LOCK = 30;  // evita confundir swipe com scroll
+
+wrapper.addEventListener('touchstart', (e) => {
+  clearInterval(autoPlay);
+  const t = e.touches[0];
+  startX = t.clientX;
+  startY = t.clientY;
+  dragging = true;
+}, { passive: true });
+
+wrapper.addEventListener('touchmove', (e) => {
+  if (!dragging) return;
+
+  const t = e.touches[0];
+  const dx = t.clientX - startX;
+  const dy = t.clientY - startY;
+
+  // se for mais vertical que horizontal, libera o scroll
+  if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > VERTICAL_LOCK) {
+    dragging = false;
+  }
+}, { passive: true });
+
+wrapper.addEventListener('touchend', (e) => {
+  // volta o autoplay
+  const restart = () => autoPlay = setInterval(() => mover(1), 6000);
+
+  if (!dragging) {
+    restart();
+    return;
+  }
+
+  const t = e.changedTouches[0];
+  const dx = t.clientX - startX;
+
+  if (Math.abs(dx) >= SWIPE_MIN) {
+    mover(dx < 0 ? 1 : -1); // esquerda = próximo / direita = anterior
+  }
+
+  dragging = false;
+  restart();
+}, { passive: true });
 </script>
 
 </body>
